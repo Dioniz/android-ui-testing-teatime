@@ -32,6 +32,21 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.core.IsAnything.anything;
 
+/**
+ * Usually Espresso syncs all view operations with the UI thread as well as AsyncTasks, but it can't
+ * do so with custom resources (e.g. activity or service). For such cases, we can register the
+ * custom resource and Espresso will wait for the resource to be idle before
+ * executing a view operation.
+ *
+ * In this example, we simulate an idling situation. This test is the same as the
+ * MenuActivityScreenTest but with an Idling Resource to help with synchronization.
+ *
+ * We added an idling period from when the user clicks on a GridView item
+ * in MenuActivity to when corresponding order activity appears. This is to simulate potential
+ * delay that could happen if this data were being retrieved from the web. Without registering the
+ * custom resources, this test would fail because the test would proceed without waiting
+ * for the Idling Resource.
+ */
 
 @RunWith(AndroidJUnit4.class)
 public class IdlingResourceMenuActivityTest {
